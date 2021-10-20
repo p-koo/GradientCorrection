@@ -1,6 +1,8 @@
 ################################################################################ LAYERS 
 
-import tensorflow as tf
+test=5
+
+'''import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import backend as K
 import numpy as np
@@ -29,7 +31,7 @@ def dense_layer(input_layer, num_units, activation, dropout=0.5, l2=None, bn=Tru
     if dropout:
         nn = keras.layers.Dropout(dropout)(nn)
         
-    return nn
+    return nn'''
 
 
 '''############################################################################## UTILS
