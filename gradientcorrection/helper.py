@@ -55,7 +55,7 @@ def load_synthetic_models(filepath, dataset='test'):
         return np.array(trainmat['model_test']).astype(np.float32)
 
 
-def load_model(model_name, activation='relu', input_shape=200):
+def load_model(model_name, kernel_size, activation='relu', input_shape=200):
 
     if model_name == 'cnn-50':
         from model_zoo import cnn_model
@@ -71,11 +71,11 @@ def load_model(model_name, activation='relu', input_shape=200):
 
     elif model_name == 'cnn-local':
         #from model_zoo import cnn_local
-        model = model_zoo.cnn_local_model(activation)
+        model = model_zoo.cnn_local_model(kernel_size, activation)
 
     elif model_name == 'cnn-dist':
         #from model_zoo import cnn_dist
-        model = model_zoo.cnn_dist_model(activation)
+        model = model_zoo.cnn_dist_model(kernel_size, activation)
 
     elif model_name == 'basset':
         from model_zoo import basset
