@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, accuracy_score, roc_auc_score
 from tensorflow import keras
-import model_zoo
 
 
 def load_data(file_path, reverse_compliment=False):
