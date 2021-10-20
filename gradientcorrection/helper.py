@@ -70,12 +70,12 @@ def load_model(model_name, activation='relu', input_shape=200):
         model = cnn_deep.model(activation, input_shape)
 
     elif model_name == 'cnn-local':
-        from model_zoo import cnn_local
-        model = cnn_local_model(activation)
+        #from model_zoo import cnn_local
+        model = model_zoo.cnn_local_model(activation)
 
     elif model_name == 'cnn-dist':
-        from model_zoo import cnn_dist
-        model = cnn_dist_model(activation)
+        #from model_zoo import cnn_dist
+        model = model_zoo.cnn_dist_model(activation)
 
     elif model_name == 'basset':
         from model_zoo import basset
