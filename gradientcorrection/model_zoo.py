@@ -1,6 +1,6 @@
 ################################################################################### CNN-local and CNN-dist
 from tensorflow import keras
-import layers, utils
+from gradientcorrection import layers, utils
 
 def cnn_dist_model(activation='relu'):
         
