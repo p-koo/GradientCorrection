@@ -3,7 +3,7 @@ from tensorflow import keras
 from gradientcorrection import layers, utils
 
 #Default models 
-def cnn_dist_model(activation='relu'):
+def cnn_dist_model(activation='relu', kernel_size=19):
         
     # input layer
     inputs = keras.layers.Input(shape=(200,4))
@@ -11,7 +11,7 @@ def cnn_dist_model(activation='relu'):
     # block 1
     nn = layers.conv_layer(inputs,
                            num_filters=24, 
-                           kernel_size=19, 
+                           kernel_size=kernel_size, 
                            padding='same', 
                            activation=activation, 
                            dropout=0.1,
@@ -71,7 +71,7 @@ def cnn_dist_model(activation='relu'):
 
 
 
-def cnn_local_model(activation='relu'):
+def cnn_local_model(activation='relu', kernel_size=19):
       
     # input layer
     inputs = keras.layers.Input(shape=(200,4))
@@ -79,7 +79,7 @@ def cnn_local_model(activation='relu'):
     # layer 1
     nn = layers.conv_layer(inputs,
                            num_filters=24, 
-                           kernel_size=19, 
+                           kernel_size=kernel_size, 
                            padding='same', 
                            activation=activation, 
                            dropout=0.1,
