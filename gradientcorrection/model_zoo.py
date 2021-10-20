@@ -1,6 +1,6 @@
 ################################################################################### CNN-local and CNN-dist
 from tensorflow import keras
-from tfomics import layers, utils
+import layers, utils
 
 def cnn_dist_model(activation='relu'):
         
