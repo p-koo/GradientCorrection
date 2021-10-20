@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, accuracy_score, roc_auc_score
 from tensorflow import keras
-
+from gradientcorrection import model_zoo
 
 def load_data(file_path, reverse_compliment=False):
 
@@ -58,31 +58,31 @@ def load_synthetic_models(filepath, dataset='test'):
 def load_model(model_name, activation='relu', input_shape=200):
 
     if model_name == 'cnn-50':
-        #from model_zoo import cnn_model
+        from model_zoo import cnn_model
         model = cnn_model.model([50, 2], activation, input_shape)
 
     elif model_name == 'cnn-2':
-        #from model_zoo import cnn_model
+        from model_zoo import cnn_model
         model = cnn_model.model([2, 50], activation, input_shape)
 
     elif model_name == 'cnn-deep':
-        #from model_zoo import cnn_deep
+        from model_zoo import cnn_deep
         model = cnn_deep.model(activation, input_shape)
 
     elif model_name == 'cnn-local':
-        #from model_zoo import cnn_local
+        from model_zoo import cnn_local
         model = cnn_local_model(activation)
 
     elif model_name == 'cnn-dist':
-        #from model_zoo import cnn_dist
+        from model_zoo import cnn_dist
         model = cnn_dist_model(activation)
 
     elif model_name == 'basset':
-        #from model_zoo import basset
+        from model_zoo import basset
         model = basset.model(activation)
 
     elif model_name == 'residualbind':
-        #from model_zoo import residualbind
+        from model_zoo import residualbind
         model = residualbind.model(activation)
 
     return model
