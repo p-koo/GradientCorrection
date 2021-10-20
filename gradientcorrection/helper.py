@@ -71,11 +71,11 @@ def load_model(model_name, first_layer_kernel_size=19, activation='relu', input_
 
     elif model_name == 'cnn-local':
         #from model_zoo import cnn_local
-        model = model_zoo.cnn_local_model(kernel_size, activation)
+        model = model_zoo.cnn_local_model(first_layer_kernel_size=19, activation)
 
     elif model_name == 'cnn-dist':
         #from model_zoo import cnn_dist
-        model = model_zoo.cnn_dist_model(kernel_size, activation)
+        model = model_zoo.cnn_dist_model(first_layer_kernel_size=19, activation)
 
     elif model_name == 'basset':
         from model_zoo import basset
