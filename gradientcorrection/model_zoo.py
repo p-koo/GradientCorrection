@@ -115,7 +115,7 @@ def cnn_local_model(first_layer_kernel_size, activation='relu'):
 
 ############################################################  Similar CNN models, but with the initializer. 
 
-def cnn_dist_init_model(activation='relu', sigma=0.05):
+def cnn_dist_init_model(first_layer_kernel_size=19, activation='relu', sigma=0.05):
         
     initializer = keras.initializers.RandomNormal(mean=0.0, stddev=sigma)
 
@@ -125,7 +125,7 @@ def cnn_dist_init_model(activation='relu', sigma=0.05):
     # block 1
     nn = conv_layer(inputs,
                     num_filters=24, 
-                    kernel_size=19, 
+                    kernel_size=first_layer_kernel_size, 
                     padding='same', 
                     activation=activation, 
                     kernel_initializer=initializer,
@@ -190,7 +190,7 @@ def cnn_dist_init_model(activation='relu', sigma=0.05):
 
 
 
-def cnn_local_init_model(activation='relu', sigma=0.05):
+def cnn_local_init_model(first_layer_kernel_size=19, activation='relu', sigma=0.05):
       
     initializer = keras.initializers.RandomNormal(mean=0.0, stddev=sigma)
     
@@ -200,7 +200,7 @@ def cnn_local_init_model(activation='relu', sigma=0.05):
     # layer 1
     nn = conv_layer(inputs,
                     num_filters=24, 
-                    kernel_size=19, 
+                    kernel_size=first_layer_kernel_size, 
                     padding='same', 
                     activation=activation, 
                     kernel_initializer=initializer,
