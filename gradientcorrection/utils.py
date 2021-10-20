@@ -1,10 +1,46 @@
-############################################################################## UTILS
+################################################################################ LAYERS 
+
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import backend as K
+import numpy as np
+from tensorflow.keras.layers import Layer
+
+
+def dense_layer(input_layer, num_units, activation, dropout=0.5, l2=None, bn=True, kernel_initializer=None):
+    if l2:
+        l2 = keras.regularizers.l2(l2)
+    else:
+        l2 = None
+
+    nn = keras.layers.Dense(num_units, 
+                            activation=None, 
+                            use_bias=False,  
+                            kernel_initializer=kernel_initializer,
+                            bias_initializer='zeros', 
+                            kernel_regularizer=l2, 
+                            bias_regularizer=None,
+                            activity_regularizer=None, 
+                            kernel_constraint=None, 
+                            bias_constraint=None)(input_layer)
+    if bn:
+        nn = keras.layers.BatchNormalization()(nn)
+    nn = keras.layers.Activation(activation)(nn)
+    if dropout:
+        nn = keras.layers.Dropout(dropout)(nn)
+        
+    return nn
+
+
+'''############################################################################## UTILS
+
+
 
 import os
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-'''from tensorflow.keras import backend as K
+from tensorflow.keras import backend as K
 import tensorflow.compat.v1.keras.backend as K1
 
 
