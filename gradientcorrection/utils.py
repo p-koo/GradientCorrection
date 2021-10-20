@@ -7,7 +7,7 @@ from tensorflow import keras
 from tensorflow.keras import backend as K
 import tensorflow.compat.v1.keras.backend as K1
 
-
+'''
 def make_directory(path, foldername, verbose=1):
     """make a directory"""
 
@@ -110,4 +110,4 @@ def scale_sigmoid(x):
     return K.sigmoid(x)*4000
 
 def scale_relu(x):
-    return K.relu((x)**3)
+    return K.relu((x)**3)'''
