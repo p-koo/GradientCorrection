@@ -1,11 +1,11 @@
 import numpy as np
 
-def Scalar_product(attr_score_copy, X_model_normalized_copy):
-	scalar_product = np.average ( np.sum(np.sum(np.multiply(attr_score_copy , X_model_normalized_copy), axis=2), axis=1)/(   np.sqrt(np.sum(np.sum(np.multiply(attr_score_copy,attr_score_copy), axis=2), axis=1) )  * np.sqrt(np.sum(np.sum(np.multiply(X_model_normalized_copy,X_model_normalized_copy), axis=2), axis=1) ) )  )
+def Scalar_product(x1, x2):
+	scalar_product = np.average ( np.sum(np.sum(np.multiply(x1 , x2), axis=2), axis=1)/(   np.sqrt(np.sum(np.sum(np.multiply(x1,x1), axis=2), axis=1) )  * np.sqrt(np.sum(np.sum(np.multiply(x2,x2), axis=2), axis=1) ) )  )
 	return scalar_product
 
-def Scalar_product_set(attr_score_copy, X_model_normalized_copy):
-	scalar_product = np.sum(np.sum(np.multiply(attr_score_copy , X_model_normalized_copy), axis=2), axis=1)/(   np.sqrt(np.sum(np.sum(np.multiply(attr_score_copy,attr_score_copy), axis=2), axis=1) )  * np.sqrt(np.sum(np.sum(np.multiply(X_model_normalized_copy,X_model_normalized_copy), axis=2), axis=1) ) )  
+def Scalar_product_set(x1, x2):
+	scalar_product = np.sum(np.sum(np.multiply(x1 , x2), axis=2), axis=1)/(   np.sqrt(np.sum(np.sum(np.multiply(x1,x1), axis=2), axis=1) )  * np.sqrt(np.sum(np.sum(np.multiply(x2,x2), axis=2), axis=1) ) )  
 	return scalar_product   
 
 
