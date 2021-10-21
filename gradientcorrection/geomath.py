@@ -13,9 +13,6 @@ def saliency_correction(saliency_score, axis=-1):
   num_dim = saliency_score.shape[axis]
   return  saliency_score - np.sum(saliency_score, axis=axis, keepdims=True)/num_dim 
 
-def cosine_similarity(x1, x2, axis=-1):
-  return np.sum(x1*x2, axis=axis)/(np.sqrt(np.sum(x1**2, axis=axis))*np.sqrt(np.sum(x2**2, axis=axis)))
-
 
 def calculate_angles(saliency_score):
   orthogonal_residual = np.sum(saliency_score, axis=-1)
