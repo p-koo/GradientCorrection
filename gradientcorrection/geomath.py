@@ -21,5 +21,5 @@ def L2(saliency_score):
     return L2_norm
 
 def disperson(saliency_score, saliency_score_ensemble):
-  return L2_A(saliency_score - saliency_score_ensemble) 
+  return L2(saliency_score - saliency_score_ensemble) 
   #return cosine_similarity(saliency_score, saliency_score_ensemble)   
