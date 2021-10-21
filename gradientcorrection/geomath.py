@@ -16,10 +16,10 @@ def calculate_angles(saliency_score):
   sine = np.arcsin(sine) * (180/3.1416) 
   return sine
 
-def L2_A(saliency_score):
+def L2(saliency_score):
     L2_norm = np.sqrt(np.sum(np.square(saliency_score), axis=-1))
     return L2_norm
 
-def disperson_A(saliency_score, saliency_score_ensemble):
+def disperson(saliency_score, saliency_score_ensemble):
   return L2_A(saliency_score - saliency_score_ensemble) 
   #return cosine_similarity(saliency_score, saliency_score_ensemble)   
