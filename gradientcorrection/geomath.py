@@ -9,6 +9,11 @@ def Scalar_product_set(attr_score_copy, X_model_normalized_copy):
 	return scalar_product   
 
 
+def saliency_correction(saliency_score, axis=-1):
+  num_dim = saliency_score.shape[axis]
+  return  saliency_score - np.sum(saliency_score, axis=axis, keepdims=True)/num_dim 
+
+
 def calculate_angles(saliency_score):
   orthogonal_residual = np.sum(saliency_score, axis=-1)
   L2_norm = np.sqrt(np.sum(np.square(saliency_score), axis=-1))
