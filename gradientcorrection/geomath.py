@@ -9,7 +9,7 @@ def Scalar_product_set(attr_score_copy, X_model_normalized_copy):
 	return scalar_product   
 
 
-def calculate_angles_A(saliency_score):
+def calculate_angles(saliency_score):
   orthogonal_residual = np.sum(saliency_score, axis=-1)
   L2_norm = np.sqrt(np.sum(np.square(saliency_score), axis=-1))
   sine = 1/2 * orthogonal_residual / L2_norm 
