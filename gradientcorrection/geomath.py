@@ -25,6 +25,6 @@ def L2(saliency_score):
     L2_norm = np.sqrt(np.sum(np.square(saliency_score), axis=-1))
     return L2_norm
 
-def disperson(saliency_score, saliency_score_ensemble):
+def dispersion(saliency_score, saliency_score_ensemble):
   return L2(saliency_score - saliency_score_ensemble) 
 
