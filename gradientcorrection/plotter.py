@@ -44,3 +44,43 @@ def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_
     plt.ylabel('Improvement', fontsize=15)
     plt.savefig('drive/My Drive/results/Cosine_Saliency.pdf', bbox_inches='tight')  
     plt.show()  
+
+    
+    #########################################################################################################
+    
+    
+    def plot_attribution_vs_performance(attribution, performance, x_min, x_max):
+
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+
+    alpha=0.9
+    #---------------------
+    #Cosine
+    ax1.scatter( attribution['cnn-local_relu'], performance['cnn-local_relu'], s=30, edgecolors='g',facecolors='none', marker="o", alpha=alpha) #label='COSINE'
+
+    #---------------------
+    #Cosine
+    ax1.scatter( attribution['cnn-local_exponential'], performance['cnn-local_exponential'], s=30, edgecolors='r',facecolors='none', marker="o", alpha=alpha)
+
+    #---------------------
+    #Cosine
+    ax1.scatter( attribution['cnn-dist_relu'],  performance['cnn-dist_relu'], s=30, edgecolors='b',facecolors='none', marker="o", alpha=alpha)
+
+    #---------------------
+    #Cosine
+    ax1.scatter( attribution['cnn-dist_exponential'], performance['cnn-dist_exponential'], s=30, edgecolors='black',facecolors='none', marker="o", alpha=alpha)
+
+    x__ = np.linspace(x_min, 1.0, 100)
+    #ax1.plot(x__, x__*0, c="black");
+
+    ax1.tick_params(axis="x", labelsize=15)
+    ax1.tick_params(axis="y", labelsize=15) 
+
+    #plt.legend(loc='lower right');
+    plt.xlabel('Cosine similarity', fontsize=15)
+    plt.ylabel('Classification AUC', fontsize=15)
+    plt.savefig('drive/My Drive/results/Performance_VS_SaliencyCosine.pdf', bbox_inches='tight')  
+    plt.xticks(fontsize=15)
+    plt.yticks(fontsize=15)
+    plt.show()
