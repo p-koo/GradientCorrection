@@ -28,3 +28,44 @@ def L2(saliency_score):
 def dispersion(saliency_score, saliency_score_ensemble):
   return L2(saliency_score - saliency_score_ensemble) 
 
+
+#### COUNT LARGE ANGLES
+def count_large_angles(sine): 
+
+    #count lare angles
+    large_angle = 30
+    count_large_angles30 = np.zeros((len(sine),len(sine[0])))
+    for z in range (len(sine)):
+        for i in range (len(sine[0])):
+            count=0
+            for j in range (len(sine[0,0])):
+                if(np.abs(sine[z,i,j])>large_angle): count+=1  
+            count_large_angles30[z,i]=count
+    count_large_angles30=np.array(count_large_angles30.reshape(len(count_large_angles30)*len(count_large_angles30[0]),))  
+    count_large_angles30=100* count_large_angles30/len(sine[0,0])
+
+    #count lare angles
+    large_angle = 45
+    count_large_angles45 = np.zeros((len(sine),len(sine[0])))
+    for z in range (len(sine)):
+        for i in range (len(sine[0])):
+            count=0
+            for j in range (len(sine[0,0])):
+                if(np.abs(sine[z,i,j])>large_angle): count+=1  
+            count_large_angles45[z,i]=count
+    count_large_angles45=np.array(count_large_angles45.reshape(len(count_large_angles45)*len(count_large_angles45[0]),))  
+    count_large_angles45=100* count_large_angles45/len(sine[0,0])
+
+    #count lare angles
+    large_angle = 60
+    count_large_angles60 = np.zeros((len(sine),len(sine[0])))
+    for z in range (len(sine)):
+        for i in range (len(sine[0])):
+            count=0
+            for j in range (len(sine[0,0])):
+                if(np.abs(sine[z,i,j])>large_angle): count+=1  
+            count_large_angles60[z,i]=count
+    count_large_angles60=np.array(count_large_angles60.reshape(len(count_large_angles60)*len(count_large_angles60[0]),))  
+    count_large_angles60=100* count_large_angles60/len(sine[0,0])
+ 
+    return count_large_angles30, count_large_angles45, count_large_angles60
