@@ -95,6 +95,7 @@ def interpretability_performance(score_times_input, X_model, threshold=0.1):
 
     roc_score = np.array(roc_score)
     pr_score = np.array(pr_score)
+    gt_info_score = np.array(gt_info_score)
 
     return roc_score, pr_score, gt_info_score
     
