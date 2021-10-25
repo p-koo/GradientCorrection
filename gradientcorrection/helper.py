@@ -1,11 +1,23 @@
-################################################################################# HELPER 
-import os, sys
+import os
 import h5py
-import pandas as pd
 import numpy as np
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, accuracy_score, roc_auc_score
-from tensorflow import keras
-from gradientcorrection import model_zoo
+
+
+def make_directory(path, foldername, verbose=1):
+    """make a directory"""
+
+    if not os.path.isdir(path):
+        os.mkdir(path)
+        print("making directory: " + path)
+
+    outdir = os.path.join(path, foldername)
+    if not os.path.isdir(outdir):
+        os.mkdir(outdir)
+        print("making directory: " + outdir)
+    return outdir
+
+  
 
 def load_data(file_path, reverse_compliment=False):
 
@@ -55,38 +67,6 @@ def load_synthetic_models(filepath, dataset='test'):
         return np.array(trainmat['model_test']).astype(np.float32)
 
 
-def load_model(model_name, first_layer_kernel_size=19, activation='relu', input_shape=200):
-
-    if model_name == 'cnn-50':
-        from model_zoo import cnn_model
-        model = cnn_model.model([50, 2], activation, input_shape)
-
-    elif model_name == 'cnn-2':
-        from model_zoo import cnn_model
-        model = cnn_model.model([2, 50], activation, input_shape)
-
-    elif model_name == 'cnn-deep':
-        from model_zoo import cnn_deep
-        model = cnn_deep.model(activation, input_shape)
-
-    elif model_name == 'cnn-local':
-        #from model_zoo import cnn_local
-        model = model_zoo.cnn_local_model(first_layer_kernel_size, activation)
-
-    elif model_name == 'cnn-dist':
-        #from model_zoo import cnn_dist
-        model = model_zoo.cnn_dist_model(first_layer_kernel_size, activation)
-
-    elif model_name == 'basset':
-        from model_zoo import basset
-        model = basset.model(activation)
-
-    elif model_name == 'residualbind':
-        from model_zoo import residualbind
-        model = residualbind.model(activation)
-
-    return model
-
         
 def interpretability_performance(X, score, X_model):
 
@@ -119,32 +99,3 @@ def interpretability_performance(X, score, X_model):
 
     return roc_score, pr_score , gt_info_score
     
-
-
-def get_callbacks(monitor='val_auroc', patience=20, decay_patience=5, decay_factor=0.2):
-    es_callback = keras.callbacks.EarlyStopping(monitor=monitor, 
-                                                patience=patience, 
-                                                verbose=1, 
-                                                mode='max', 
-                                                restore_best_weights=False)
-    reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor=monitor, 
-                                                  factor=decay_factor,
-                                                  patience=decay_patience, 
-                                                  min_lr=1e-7,
-                                                  mode='max',
-                                                  verbose=1) 
-
-    return [es_callback, reduce_lr]
-
-
-
-def compile_model(model):
-
-    # set up optimizer and metrics
-    auroc = keras.metrics.AUC(curve='ROC', name='auroc')
-    aupr = keras.metrics.AUC(curve='PR', name='aupr')
-    optimizer = keras.optimizers.Adam(learning_rate=0.001)
-    loss = keras.losses.BinaryCrossentropy(from_logits=False, label_smoothing=0.0)
-    model.compile(optimizer=optimizer,
-                  loss=loss,
-                  metrics=['accuracy', auroc, aupr])

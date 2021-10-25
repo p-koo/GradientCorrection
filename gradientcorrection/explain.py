@@ -1,121 +1,238 @@
-################################################################################## EXPLAIN
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
 import tensorflow as tf
-tf.compat.v1.disable_eager_execution()
 from tensorflow import keras
-from tensorflow.keras import backend as K
-import tensorflow.compat.v1.keras.backend as K1
+
+class Explainer():
+  """wrapper class for attribution maps"""
+
+  def __init__(self, model, class_index=None, func=tf.math.reduce_mean):
+
+    self.model = model
+    self.class_index = class_index
+    self.func = func
+
+  def saliency_maps(self, X, batch_size=128):
+    
+    return function_batch(X, saliency_map, batch_size, model=self.model, 
+                          class_index=self.class_index, func=self.func) 
+
+  def smoothgrad(self, X, num_samples=50, mean=0.0, stddev=0.1):
+    
+    return function_batch(X, smoothgrad, batch_size=1, model=self.model, 
+                           num_samples=num_samples, mean=mean, stddev=stddev,
+                           class_index=self.class_index, func=self.func) 
 
 
+  def integrated_grad(self, X, baseline_type='random', num_steps=25):
 
-def saliency(model, X, class_index=0, layer=-2, batch_size=256):
-    saliency = K1.gradients(model.layers[layer].output[:,class_index], model.input)[0]
-    sess = K1.get_session()
-
-    N = len(X)
-    num_batches = int(np.floor(N/batch_size))
-
-    attr_score = []
-    for i in range(num_batches):
-        attr_score.append(sess.run(saliency, {model.inputs[0]: X[i*batch_size:(i+1)*batch_size]}))
-    if num_batches*batch_size < N:
-        attr_score.append(sess.run(saliency, {model.inputs[0]: X[num_batches*batch_size:N]}))
-
-    return np.concatenate(attr_score, axis=0)
-
- 
-
-def integrated_grad(model, X, class_index=0, layer=-2, num_background=10, num_steps=20, reference='shuffle'):
-
-    def linear_path_sequences(x, num_background, num_steps, reference):
-        def linear_interpolate(x, base, num_steps=20):
-            x_interp = np.zeros(tuple([num_steps] +[i for i in x.shape]))
-            for s in range(num_steps):
-                x_interp[s] = base + (x - base)*(s*1.0/num_steps)
-            return x_interp
-
-        L, A = x.shape 
-        seq = []
-        for i in range(num_background):
-            if reference == 'shuffle':
-                shuffle = np.random.permutation(L)
-                background = x[shuffle, :]
-            else: 
-                background = np.zeros(x.shape)        
-            seq.append(linear_interpolate(x, background, num_steps))
-        return np.concatenate(seq, axis=0)
-
-    # setup op to get gradients from class-specific outputs to inputs
-    saliency = K1.gradients(model.layers[layer].output[:,class_index], model.input)[0]
-
-    # start session
-    sess = K1.get_session()
-
-    attr_score = []
+    scores = []
     for x in X:
-        # generate num_background reference sequences that follow linear path towards x in num_steps
-        seq = linear_path_sequences(x, num_background, num_steps, reference)
-       
-        # average/"integrate" the saliencies along path -- average across different references
-        attr_score.append([np.mean(sess.run(saliency, {model.inputs[0]: seq}), axis=0)])
-    attr_score = np.concatenate(attr_score, axis=0)
-
-    return attr_score
+      x = np.expand_dims(x, axis=0)
+      baseline = self.set_baseline(x, baseline_type, num_samples=1)
+      intgrad_scores = integrated_grad(x, model=self.model, baseline=baseline,
+                           num_steps=num_steps, class_index=self.class_index, func=self.func)
+      scores.append(intgrad_scores)
+    return np.concatenate(scores, axis=0)
 
 
+  def expected_integrated_grad(self, X, num_baseline=25, baseline_type='random', num_steps=25):
     
-def attribution_score(model, X, method='saliency', norm='times_input', class_index=0,  layer=-2, **kwargs):   #The method can be changed! 
+    scores = []
+    for x in X:
+      x = np.expand_dims(x, axis=0)
+      baselines = self.set_baseline(x, baseline_type, num_samples=num_baseline)
+      intgrad_scores = expected_integrated_grad(x, model=self.model, baselines=baselines,
+                           num_steps=num_steps, class_index=self.class_index, func=self.func)
+      scores.append(intgrad_scores)
+    return np.concatenate(scores, axis=0)
 
-    N, L, A = X.shape 
-    if method == 'saliency':
-        if 'batch_size' in kwargs:
-            batch_size = kwargs['batch_size']
-        else:
-            batch_size=256
-        
-        attr_score = saliency(model, X, class_index, layer, batch_size)
 
-        
-    elif method == 'mutagenesis':
-        
-        attr_score = mutagenesis(model, X, class_index, layer)
-        
-    elif method == 'deepshap':
-        if 'num_background' in kwargs:
-            num_background = kwargs['num_background']
-        else:
-            num_background = 5
-        if 'reference' in kwargs:
-            reference = kwargs['reference']
-        else:
-            reference = 'shuffle'
+  def mutagenesis(self, X, class_index=None):
+    scores = []
+    for x in X:
+      x = np.expand_dims(x, axis=0)
+      scores.append(mutagenesis(x, self.model, class_index))
+    return np.concatenate(scores, axis=0)
+
+
+  def set_baseline(self, x, baseline, num_samples):
+    if baseline == 'random':
+      baseline = random_shuffle(x, num_samples)
+    else:
+      baseline = np.zeros((x.shape))
+    return baseline
+
+
+#------------------------------------------------------------------------------
+# Fast functions to calculate gradients and hessians
+
+@tf.function
+def saliency_map(X, model, class_index=None, func=tf.math.reduce_mean):
+  """fast function to generate saliency maps"""
+  if not tf.is_tensor(X):
+    X = tf.Variable(X)
+
+  with tf.GradientTape() as tape:
+    tape.watch(X)
+    if class_index is not None:
+      outputs = model(X)[:, class_index]
+    else:
+      outputs = func(model(X))
+  return tape.gradient(outputs, X)
+
+
+
+@tf.function
+def hessian(X, model, class_index=None, func=tf.math.reduce_mean):
+  """fast function to generate saliency maps"""
+  if not tf.is_tensor(X):
+    X = tf.Variable(X)
+
+  with tf.GradientTape() as t2:
+    t2.watch(X)
+    with tf.GradientTape() as t1:
+      t1.watch(X)
+      if class_index is not None:
+        outputs = model(X)[:, class_index]
+      else:
+        outputs = func(model(X))
+    g = t1.gradient(outputs, X)
+  return t2.jacobian(g, X)
+
+
+#------------------------------------------------------------------------------
+
+def smoothgrad(x, model, num_samples=50, mean=0.0, stddev=0.1, 
+               class_index=None, func=tf.math.reduce_mean):
+
+  _,L,A = x.shape
+  x_noise = tf.tile(x, (num_samples,1,1)) + tf.random.normal((num_samples,L,A), mean, stddev)
+  grad = saliency_map(x_noise, model, class_index=class_index, func=func)
+  return tf.reduce_mean(grad, axis=0, keepdims=True)
+
+
+#------------------------------------------------------------------------------
+
+def integrated_grad(x, model, baseline, num_steps=25, 
+                         class_index=None, func=tf.math.reduce_mean):
+
+  def integral_approximation(gradients):
+    # riemann_trapezoidal
+    grads = (gradients[:-1] + gradients[1:]) / tf.constant(2.0)
+    integrated_gradients = tf.math.reduce_mean(grads, axis=0)
+    return integrated_gradients
+  
+  def interpolate_data(baseline, x, steps):
+    steps_x = steps[:, tf.newaxis, tf.newaxis]   
+    delta = x - baseline
+    x = baseline +  steps_x * delta
+    return x
+
+  steps = tf.linspace(start=0.0, stop=1.0, num=num_steps+1)
+  x_interp = interpolate_data(baseline, x, steps)
+  grad = saliency_map(x_interp, model, class_index=class_index, func=func)
+  avg_grad = integral_approximation(grad)
+  return avg_grad * (x - baseline)  
+
+
+#------------------------------------------------------------------------------
+
+def expected_integrated_grad(x, model, baselines, num_steps=25,
+                             class_index=None, func=tf.math.reduce_mean):
+  """average integrated gradients across different backgrounds"""
+
+  grads = []
+  for baseline in baselines:
+    grads.append(integrated_grad(x, model, baseline, num_steps=num_steps, 
+                                 class_index=class_index, func=tf.math.reduce_mean))
+  return np.mean(np.array(grads), axis=0)
+
+
+#------------------------------------------------------------------------------
+
+def mutagenesis(x, model, class_index=None):
+  """ in silico mutagenesis analysis for a given sequence"""
+
+  def generate_mutagenesis(x):
+    _,L,A = x.shape 
+    x_mut = []
+    for l in range(L):
+      for a in range(A):
+        x_new = np.copy(x)
+        x_new[0,l,:] = 0
+        x_new[0,l,a] = 1
+        x_mut.append(x_new)
+    return np.concatenate(x_mut, axis=0)
+
+  def reconstruct_map(predictions):
+    _,L,A = x.shape 
     
-        attr_score = deepshap(model, X, class_index, num_background, reference)
+    mut_score = np.zeros((1,L,A))
+    k = 0
+    for l in range(L):
+      for a in range(A):
+        mut_score[0,l,a] = predictions[k]
+        k += 1
+    return mut_score
 
-        
-    elif method == 'integrated_grad':
-        if 'num_background' in kwargs:
-            num_background = kwargs['num_background']
-        else:
-            num_background = 10
-        if 'num_steps' in kwargs:
-            num_steps = kwargs['num_steps']
-        else:
-            num_steps = 20
-        if 'reference' in kwargs:
-            reference = kwargs['reference']
-        else:
-            reference = 'shuffle'
-        
-        attr_score = integrated_grad(model, X, class_index, layer, num_background, num_steps, reference)
+  def get_score(x, model, class_index):
+    score = model.predict(x)
+    if class_index == None:
+      score = np.sqrt(np.sum(score**2, axis=-1, keepdims=True))
+    else:
+      score = score[:,class_index]
+    return score
 
-    if norm == 'l2norm':
-        attr_score = np.sqrt(np.sum(np.squeeze(attr_score)**2, axis=2, keepdims=True) + 1e-10)
-        attr_score =  X * np.matmul(attr_score, np.ones((1, X.shape[-1])))
-        
-    elif norm == 'times_input':
-        attr_score *= X
+  # generate mutagenized sequences
+  x_mut = generate_mutagenesis(x)
+  
+  # get baseline wildtype score
+  wt_score = get_score(x, model, class_index)
+  predictions = get_score(x_mut, model, class_index)
 
-    return attr_score
+  # reshape mutagenesis predictiosn
+  mut_score = reconstruct_map(predictions)
+
+  return mut_score - wt_score
+
+#------------------------------------------------------------------------------
+
+def grad_times_input(x, scores):
+  new_scores = []
+  for i, score in enumerate(scores):
+    new_scores.append(np.sum(x[i]*score, axis=1))
+  return np.array(new_scores)
+
+
+def l2_norm(scores):
+  return np.sum(np.sqrt(scores**2), axis=2)
+
+
+#------------------------------------------------------------------------------
+# Useful functions
+#------------------------------------------------------------------------------
+
+
+def function_batch(X, fun, batch_size=128, **kwargs):
+  """ run a function in batches """
+
+  dataset = tf.data.Dataset.from_tensor_slices(X)
+  outputs = []
+  for x in dataset.batch(batch_size):
+    outputs.append(fun(x, **kwargs))
+  return np.concatenate(outputs, axis=0)
+
+
+
+def random_shuffle(x, num_samples=1):
+  """ randomly shuffle sequences 
+      assumes x shape is (N,L,A) """
+
+  x_shuffle = []
+  for i in range(num_samples):
+    shuffle = np.random.permutation(x.shape[1])
+    x_shuffle.append(x[0,shuffle,:])
+  return np.array(x_shuffle)
+
+
+  

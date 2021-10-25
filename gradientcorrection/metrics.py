@@ -1,5 +1,3 @@
-################################################################################ METRICS
-
 import numpy as np
 from scipy import stats
 from sklearn.metrics import roc_curve, auc, precision_recall_curve, accuracy_score, roc_auc_score

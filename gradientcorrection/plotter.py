@@ -2,18 +2,18 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np 
 
-def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_max ):
+def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_max):
 
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
 
-    ax1.add_patch( patches.Rectangle( (x_min, 0), 1.3, y_max, facecolor = 'green', fill=True , alpha=0.1 ) )
-    ax1.add_patch( patches.Rectangle( (x_min, 0), 1.3, y_min, facecolor = 'red', fill=True , alpha=0.1 ) )
+    ax1.add_patch(patches.Rectangle((x_min, 0), 1.3, y_max, facecolor = 'green', fill=True , alpha=0.1))
+    ax1.add_patch(patches.Rectangle((x_min, 0), 1.3, y_min, facecolor = 'red', fill=True , alpha=0.1))
 
     alpha=0.9
     #---------------------
     #Cosine
-    ax1.scatter( attribution['cnn-local_relu'], attribution_corrected['cnn-local_relu']-attribution['cnn-local_relu'], s=30, edgecolors='g',facecolors='none', marker="o", alpha=alpha) #label='COSINE'
+    ax1.scatter(attribution['cnn-local_relu'], attribution_corrected['cnn-local_relu']-attribution['cnn-local_relu'], s=30, edgecolors='g',facecolors='none', marker="o", alpha=alpha) #label='COSINE'
     mean1a=np.average(attribution_corrected['cnn-local_relu']-attribution['cnn-local_relu'])
 
     #---------------------
@@ -46,15 +46,14 @@ def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_
     plt.show()  
 
     
-    #########################################################################################################
     
     
-def plot_attribution_vs_performance(attribution, performance, x_min, x_max):
+def plot_attribution_vs_performance(attribution, performance, x_min, x_max, labelsize=15, fontsize=15, alpha=0.9, s=30):
 
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
 
-    alpha=0.9
+    alpha = 0.9
     #---------------------
     #Cosine
     ax1.scatter( attribution['cnn-local_relu'], performance['cnn-local_relu'], s=30, edgecolors='g',facecolors='none', marker="o", alpha=alpha) #label='COSINE'
@@ -65,7 +64,7 @@ def plot_attribution_vs_performance(attribution, performance, x_min, x_max):
 
     #---------------------
     #Cosine
-    ax1.scatter( attribution['cnn-dist_relu'],  performance['cnn-dist_relu'], s=30, edgecolors='b',facecolors='none', marker="o", alpha=alpha)
+    ax1.scatter( attribution['cnn-dist_relu'], performance['cnn-dist_relu'], s=30, edgecolors='b',facecolors='none', marker="o", alpha=alpha)
 
     #---------------------
     #Cosine
@@ -74,13 +73,16 @@ def plot_attribution_vs_performance(attribution, performance, x_min, x_max):
     x__ = np.linspace(x_min, 1.0, 100)
     #ax1.plot(x__, x__*0, c="black");
 
-    ax1.tick_params(axis="x", labelsize=15)
-    ax1.tick_params(axis="y", labelsize=15) 
+    ax1.tick_params(axis="x", labelsize=labelsize)
+    ax1.tick_params(axis="y", labelsize=labelsize) 
 
     #plt.legend(loc='lower right');
-    plt.xlabel('Cosine similarity', fontsize=15)
-    plt.ylabel('Classification AUC', fontsize=15)
+    plt.xlabel('Cosine similarity', fontsize=fontsize)
+    plt.ylabel('Classification AUC', fontsize=fontsize)
     plt.savefig('drive/My Drive/results/Performance_VS_SaliencyCosine.pdf', bbox_inches='tight')  
-    plt.xticks(fontsize=15)
-    plt.yticks(fontsize=15)
+    plt.xticks(fontsize=fontsize)
+    plt.yticks(fontsize=fontsize)
     plt.show()
+
+
+
