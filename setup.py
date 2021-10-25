@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="gradientcorrection",
+    name="gradient_correction",
     version="0.1",
     description="Gradient correction method",
     author="Antonio Majdandzic",

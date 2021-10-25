@@ -1,3 +1,5 @@
+""" code taken from https://github.com/p-koo/tfomics/explain.py
+"""
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
@@ -195,17 +197,6 @@ def mutagenesis(x, model, class_index=None):
 
   return mut_score - wt_score
 
-#------------------------------------------------------------------------------
-
-def grad_times_input(x, scores):
-  new_scores = []
-  for i, score in enumerate(scores):
-    new_scores.append(np.sum(x[i]*score, axis=1))
-  return np.array(new_scores)
-
-
-def l2_norm(scores):
-  return np.sum(np.sqrt(scores**2), axis=2)
 
 
 #------------------------------------------------------------------------------
@@ -235,4 +226,4 @@ def random_shuffle(x, num_samples=1):
   return np.array(x_shuffle)
 
 
-  
+

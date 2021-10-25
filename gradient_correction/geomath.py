@@ -1,6 +1,9 @@
 import numpy as np
 
-def scalar_product(x1, x2):
+def attribution_correction(attr_score):
+    return attr_score - np.mean(attr_score, axis=2, keepdims=True)
+
+def cosine_similarity(x1, x2):
 	scalar_product = np.average(np.sum(np.sum(np.multiply(x1, x2), axis=2), axis=1)/(np.sqrt(np.sum(np.sum(np.multiply(x1,x1), axis=2), axis=1)) * np.sqrt(np.sum(np.sum(np.multiply(x2,x2), axis=2), axis=1))))
 	return scalar_product
 

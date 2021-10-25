@@ -60,28 +60,27 @@ def load_synthetic_models(filepath, dataset='test'):
 
     trainmat = h5py.File(filepath, 'r')
     if dataset == 'train':
-        return np.array(trainmat['model_train']).astype(np.float32)
+        return np.array(trainmat['model_train']).astype(np.float32).transpose([0,2,1])
     elif dataset == 'valid':
-        return np.array(trainmat['model_valid']).astype(np.float32)
+        return np.array(trainmat['model_valid']).astype(np.float32).transpose([0,2,1])
     elif dataset == 'test':
-        return np.array(trainmat['model_test']).astype(np.float32)
+        return np.array(trainmat['model_test']).astype(np.float32).transpose([0,2,1])
 
 
         
-def interpretability_performance(X, score, X_model):
+def interpretability_performance(score_times_input, X_model, threshold=0.1):
 
-    score = np.sum(score, axis=2)
     pr_score = []
     roc_score = []
     gt_info_score = []
-    for j, gs in enumerate(score):
+    for j, gs in enumerate(score_times_input):
 
         # calculate information of ground truth
         gt_info = np.log2(4) + np.sum(X_model[j]*np.log2(X_model[j]+1e-10),axis=0)
 
         # set label if information is greater than 0
         label = np.zeros(gt_info.shape)
-        label[gt_info > 0.1] = 1  #Antonio change, was 0.01
+        label[gt_info > threshold] = 1  
 
         # precision recall metric
         precision, recall, thresholds = precision_recall_curve(label, gs)
@@ -97,5 +96,5 @@ def interpretability_performance(X, score, X_model):
     roc_score = np.array(roc_score)
     pr_score = np.array(pr_score)
 
-    return roc_score, pr_score , gt_info_score
+    return roc_score, pr_score, gt_info_score
     
