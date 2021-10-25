@@ -49,7 +49,7 @@ def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_
     #########################################################################################################
     
     
-    def plot_attribution_vs_performance(attribution, performance, x_min, x_max):
+def plot_attribution_vs_performance(attribution, performance, x_min, x_max):
 
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
