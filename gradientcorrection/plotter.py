@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import numpy as np 
 
 def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_max ):
 
