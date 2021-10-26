@@ -2,20 +2,21 @@ from tensorflow import keras
 
 
 def cnn_deep(input_shape, output_shape, activation='relu', num_filters=24, initializer='he_normal'):
-        
+    l2 = keras.regularizers.l2(1e-6)
+
     # input layer
     inputs = keras.layers.Input(shape=input_shape)
 
     # layer 1 
     nn = keras.layers.Conv1D(filters=num_filters, kernel_size=11, padding='same', 
-                             kernel_regularizer=1e-6, kernel_initializer=initializer)(inputs)     
+                             kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation(activation)(nn)
     nn = keras.layers.Dropout(0.1)(nn)
 
     # layer 2
     nn = keras.layers.Conv1D(filters=32, kernel_size=7, padding='same', 
-                             kernel_regularizer=1e-6, kernel_initializer=initializer)(inputs)     
+                             kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation('relu')(nn)
     nn = keras.layers.Dropout(0.2)(nn)
@@ -23,7 +24,7 @@ def cnn_deep(input_shape, output_shape, activation='relu', num_filters=24, initi
 
     # layer 3
     nn = keras.layers.Conv1D(filters=48, kernel_size=7, padding='same', 
-                             kernel_regularizer=1e-6, kernel_initializer=initializer)(inputs)     
+                             kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation('relu')(nn)
     nn = keras.layers.Dropout(0.3)(nn)
@@ -31,7 +32,7 @@ def cnn_deep(input_shape, output_shape, activation='relu', num_filters=24, initi
 
     # layer 4
     nn = keras.layers.Conv1D(filters=64, kernel_size=3, padding='same', 
-                             kernel_regularizer=1e-6, kernel_initializer=initializer)(inputs)     
+                             kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation('relu')(nn)
     nn = keras.layers.Dropout(0.4)(nn)
@@ -39,7 +40,7 @@ def cnn_deep(input_shape, output_shape, activation='relu', num_filters=24, initi
 
     # layer 5
     nn = keras.layers.Flatten()(nn)
-    nn = keras.layers.Dense(96, kernel_regularizer=1e-6, kernel_initializer=initializer)(inputs)     
+    nn = keras.layers.Dense(96, kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation('relu')(nn)
     nn = keras.layers.Dropout(0.5)(nn)
@@ -55,12 +56,14 @@ def cnn_deep(input_shape, output_shape, activation='relu', num_filters=24, initi
 
 def cnn_shallow(input_shape, output_shape, activation='relu', num_filters=24, initializer='he_normal'):
    
+    l2 = keras.regularizers.l2(1e-6)
+    
     # input layer
     inputs = keras.layers.Input(shape=input_shape)
 
     # layer 1 
     nn = keras.layers.Conv1D(filters=num_filters, kernel_size=19, padding='same', 
-                             kernel_regularizer=1e-6, kernel_initializer=initializer)(inputs)     
+                             kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation(activation)(nn)
     nn = keras.layers.Dropout(0.1)(nn)
@@ -68,7 +71,7 @@ def cnn_shallow(input_shape, output_shape, activation='relu', num_filters=24, in
 
     # layer 2
     nn = keras.layers.Conv1D(filters=48, kernel_size=3, padding='same', 
-                             kernel_regularizer=1e-6, kernel_initializer=initializer)(inputs)     
+                             kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation('relu')(nn)
     nn = keras.layers.Dropout(0.2)(nn)
@@ -76,7 +79,7 @@ def cnn_shallow(input_shape, output_shape, activation='relu', num_filters=24, in
 
     # layer 3
     nn = keras.layers.Flatten()(nn)
-    nn = keras.layers.Dense(96, kernel_regularizer=1e-6, kernel_initializer=initializer)(inputs)     
+    nn = keras.layers.Dense(96, kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation('relu')(nn)
     nn = keras.layers.Dropout(0.5)(nn)
