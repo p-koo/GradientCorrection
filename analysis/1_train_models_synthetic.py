@@ -67,7 +67,7 @@ for model_name in model_names:
                                 batch_size=100, 
                                 shuffle=True,
                                 validation_data=(x_valid, y_valid), 
-                                callbacks=callbacks)
+                                callbacks=[es_callback, reduce_lr])
 
             # save model
             weights_path = os.path.join(params_path, name+'.h5')
