@@ -47,7 +47,7 @@ for model_name in model_names:
             optimizer = keras.optimizers.Adam(learning_rate=0.001)
             loss = keras.losses.BinaryCrossentropy(from_logits=False)
             model.compile(optimizer=optimizer, loss=loss, metrics=[auroc])
-
+            print(model.summary())
             # setup callbacks
             es_callback = keras.callbacks.EarlyStopping(monitor='val_auroc', 
                                                         patience=10, 
