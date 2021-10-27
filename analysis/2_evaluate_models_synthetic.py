@@ -13,7 +13,7 @@ import tfomics #Antonio
 num_trials = 50  
 model_names = ['cnn_deep', 'cnn_shallow'] 
 activations = ['relu', 'exponential']  
-attr_methods = ['saliency', 'smoothgrad', 'intgrad', 'expintgrad']
+attr_methods = ['saliency', 'intgrad']  # ['saliency', 'intgrad', 'smoothgrad', 'expintgrad']
 
 results_path = os.path.join('../results', 'synthetic')  
 params_path = os.path.join(results_path, 'model_params')  
