@@ -3,7 +3,7 @@ import matplotlib.patches as patches
 import numpy as np 
 
 
-def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_max, labelsize=15, fontsize=15, alpha=0.9, s=30)):
+def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_max, labelsize=15, fontsize=15, alpha=0.9, s=30):
 
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
