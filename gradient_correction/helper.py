@@ -69,25 +69,31 @@ def load_synthetic_models(filepath, dataset='test'):
 
         
 def interpretability_performance(score_times_input, X_model, threshold=0.1):
-
+  """ Compare attribution scores to ground truth (e.g. x_model).
+      scores --> (N,L)
+      x_model --> (N,L,A)
+  """
     pr_score = []
     roc_score = []
     gt_info_score = []
     for j, gs in enumerate(score_times_input):
 
         # calculate information of ground truth
-        gt_info = np.log2(4) + np.sum(X_model[j]*np.log2(X_model[j]+1e-10),axis=0)
+        gt_info = np.log2(4) + np.sum(X_model[j]*np.log2(X_model[j]+1e-10),axis=1)
 
         # set label if information is greater than 0
         label = np.zeros(gt_info.shape)
         label[gt_info > threshold] = 1  
 
+        # (don't evaluate over low info content motif positions)
+        index = np.where((gt_info > threshold) | (gt_info == np.min(gt_info)))[0]        
+        
         # precision recall metric
-        precision, recall, thresholds = precision_recall_curve(label, gs)
+        precision, recall, thresholds = precision_recall_curve(label[index], gs[index])
         pr_score.append(auc(recall, precision))
 
         # roc curve
-        fpr, tpr, thresholds = roc_curve(label, gs)
+        fpr, tpr, thresholds = roc_curve(label[index], gs[index])
         roc_score.append(auc(fpr, tpr))
 
         #Antonio
