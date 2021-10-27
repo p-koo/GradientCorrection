@@ -114,7 +114,7 @@ for model_name in model_names:
                 auroc_scores, aupr_scores, gt_info_score = helper.interpretability_performance(scores_times_input, X_model)
 
                 # quantify interpretability performance for corrected attribution map
-                adj_scores_times_input = adj_scores * X
+                adj_scores_times_input = np.sum(adj_scores * X, axis=2)
                 auroc_adj_scores, aupr_adj_scores, _ = helper.interpretability_performance(adj_scores_times_input, X_model)
                             
                 # calculate cosine similarity interpretability performance
