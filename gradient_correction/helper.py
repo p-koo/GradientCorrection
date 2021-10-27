@@ -84,13 +84,16 @@ def interpretability_performance(score_times_input, X_model, threshold=0.1):
         # set label if information is greater than 0
         label = np.zeros(gt_info.shape)
         label[gt_info > threshold] = 1  
-           
+        
+        # (don't evaluate over low info content motif positions)
+        index = np.where((gt_info > threshold) | (gt_info == np.min(gt_info)))[0]           
+            
         # precision recall metric
-        precision, recall, thresholds = precision_recall_curve(label, gs)
+        precision, recall, thresholds = precision_recall_curve(label[index], gs[index])
         pr_score.append(auc(recall, precision))
 
         # roc curve
-        fpr, tpr, thresholds = roc_curve(label, gs)
+        fpr, tpr, thresholds = roc_curve(label[index], gs[index])
         roc_score.append(auc(fpr, tpr))
 
         #Antonio
