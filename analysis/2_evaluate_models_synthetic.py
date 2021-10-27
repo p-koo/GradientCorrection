@@ -84,7 +84,7 @@ for model_name in model_names:
             model.load_weights(weights_path)
 
             # classification performance evaluation
-            _, auroc = models.evaluate(x_test, y_test)
+            _, auroc = model.evaluate(x_test, y_test)   #model, instead of models
             results['auc'].append(auroc)
 
             # interpretability performance evaluation
