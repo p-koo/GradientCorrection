@@ -2,7 +2,7 @@ from tensorflow import keras
 
 
 def cnn_deep(input_shape, output_shape, activation='relu', num_filters=24, initializer='he_normal'):
-    l2 = keras.regularizers.l2(1e-6)
+    l2 = keras.regularizers.l2(1e-6) * 0
 
     # input layer
     inputs = keras.layers.Input(shape=input_shape)
@@ -56,7 +56,7 @@ def cnn_deep(input_shape, output_shape, activation='relu', num_filters=24, initi
 
 def cnn_shallow(input_shape, output_shape, activation='relu', num_filters=24, initializer='he_normal'):
    
-    l2 = keras.regularizers.l2(1e-6)
+    l2 = keras.regularizers.l2(1e-6) * 0 
     
     # input layer
     inputs = keras.layers.Input(shape=input_shape)
