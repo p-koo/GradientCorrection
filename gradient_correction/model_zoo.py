@@ -8,7 +8,7 @@ def cnn_deep(input_shape, output_shape, activation='relu', num_filters=24, initi
     inputs = keras.layers.Input(shape=input_shape)
 
     # layer 1 
-    nn = keras.layers.Conv1D(filters=num_filters, kernel_size=11, padding='same', 
+    nn = keras.layers.Conv1D(filters=num_filters, kernel_size=19, padding='same', 
                              kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation(activation)(nn)
