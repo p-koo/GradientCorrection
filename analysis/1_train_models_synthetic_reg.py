@@ -9,7 +9,7 @@ from gradient_correction import helper, model_zoo, regul
 
 #------------------------------------------------------------------------
 
-num_trials = 10  
+num_trials = 50  
 model_names = ['cnn_deep', 'cnn_shallow'] 
 activations = ['relu', 'exponential']  
 
