@@ -125,7 +125,7 @@ for model_name in model_names:
                 angles = geomath.calculate_angles(scores)
 
                 # improvement in attribution scores
-                improvement = adj_cos_dist - cos_dist
+                improvement = geomath.cosine_similarity_individual_nucleotides(adj_scores, X_model_centered) - geomath.cosine_similarity_individual_nucleotides(scores, X_model_centered)
 
                 # store metrics in results dict
                 results[method]['scores'].append(scores)
