@@ -10,7 +10,7 @@ import tfomics
 
 #------------------------------------------------------------------------
 
-num_trials = 10  
+num_trials = 50  
 model_names = ['cnn_deep', 'cnn_shallow'] 
 activations = ['relu', 'exponential']  
 attr_methods = ['saliency'] #['saliency', 'smoothgrad', 'intgrad', 'expintgrad']
