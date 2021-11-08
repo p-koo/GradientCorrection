@@ -102,3 +102,18 @@ def plot_regularization(log_reg, Performance, Cosine, Performance_std, Cosine_st
 
     plt.show()
     
+def plot_regularization_angles(log_reg, Angles_std, y_min, y_max, labelsize=20, fontsize=25):
+    # Plot Line1 (left Y Axis)
+    fig, ax1 = plt.subplots(1,1,figsize=(13.5,3), dpi= 80)
+    ax1.plot(log_reg, Angles_std, color='tab:green', linewidth=7.0)
+    ax1.set_ylim(y_min,y_max)
+
+    # Decorations
+    # ax1 (left Y axis)
+    ax1.set_xlabel('Angle regularization strength (log)', fontsize=fontsize)
+    ax1.tick_params(axis='x', rotation=0, labelsize=labelsize)
+    ax1.set_ylabel('Angle std', color='tab:green', fontsize=fontsize)
+    ax1.tick_params(axis='y', rotation=0, labelsize=labelsize)
+    ax1.grid(alpha=.4)
+
+    plt.show()
