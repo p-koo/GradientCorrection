@@ -70,7 +70,7 @@ def plot_attribution_vs_performance(attribution, performance, labelsize=15, font
     fig.tight_layout()  #To prevent filesave cutting of the outside parts of the figure. 
 
 
-def plot_regularization(log_reg, Performance, Cosine, Performance_std, Cosine_std, y1_min, y1_max, y2_min, y2_max, labelsize=20, fontsize=25):
+def plot_regularization(experiment_name,log_reg, Performance, Cosine, Performance_std, Cosine_std, y1_min, y1_max, y2_min, y2_max, labelsize=20, fontsize=25):
     # Plot Line1 (Left Y Axis)
     fig, ax1 = plt.subplots(1,1,figsize=(12,7), dpi= 80)
     ax1.plot(log_reg, Performance, color='tab:red', linewidth=5.0)
@@ -96,7 +96,7 @@ def plot_regularization(log_reg, Performance, Cosine, Performance_std, Cosine_st
     # ax2 (right Y axis)
     ax2.set_ylabel("Cosine similarity", color='tab:blue', fontsize=fontsize)
     ax2.tick_params(axis='y', labelcolor='tab:blue', labelsize=labelsize)
-    ax2.set_title("CNN-deep-relu", fontsize=fontsize)
+    ax2.set_title(experiment_name, fontsize=fontsize)
     fig.tight_layout()
 
 
