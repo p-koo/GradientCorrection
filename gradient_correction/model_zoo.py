@@ -1,14 +1,14 @@
 from tensorflow import keras
 
 
-def cnn_deep(input_shape, output_shape, activation='relu', num_filters=24, initializer='he_normal'):
+def cnn_deep(input_shape, output_shape, activation='relu', num_filters=24, first_layer_kernel_size=19, initializer='he_normal'):
     l2 = keras.regularizers.l2(1e-6) 
 
     # input layer
     inputs = keras.layers.Input(shape=input_shape)
 
     # layer 1 
-    nn = keras.layers.Conv1D(filters=num_filters, kernel_size=19, padding='same', 
+    nn = keras.layers.Conv1D(filters=num_filters, kernel_size=first_layer_kernel_size, padding='same', 
                              kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation(activation)(nn)
@@ -54,7 +54,7 @@ def cnn_deep(input_shape, output_shape, activation='relu', num_filters=24, initi
 
 
 
-def cnn_shallow(input_shape, output_shape, activation='relu', num_filters=24, initializer='he_normal'):
+def cnn_shallow(input_shape, output_shape, activation='relu', num_filters=24, first_layer_kernel_size=19, initializer='he_normal'):
    
     l2 = keras.regularizers.l2(1e-6) 
     
@@ -62,7 +62,7 @@ def cnn_shallow(input_shape, output_shape, activation='relu', num_filters=24, in
     inputs = keras.layers.Input(shape=input_shape)
 
     # layer 1 
-    nn = keras.layers.Conv1D(filters=num_filters, kernel_size=19, padding='same', 
+    nn = keras.layers.Conv1D(filters=num_filters, kernel_size=first_layer_kernel_size, padding='same', 
                              kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation(activation)(nn)
@@ -91,7 +91,7 @@ def cnn_shallow(input_shape, output_shape, activation='relu', num_filters=24, in
     return keras.Model(inputs=inputs, outputs=outputs)
 
   
-def cnn_deep_init(input_shape, output_shape, activation='relu', num_filters=24, sigma=0.05):
+def cnn_deep_init(input_shape, output_shape, activation='relu', num_filters=24, first_layer_kernel_size=19, sigma=0.05):
     l2 = keras.regularizers.l2(1e-6)     
     initializer = keras.initializers.RandomNormal(mean=0.0, stddev=sigma)
 
@@ -99,7 +99,7 @@ def cnn_deep_init(input_shape, output_shape, activation='relu', num_filters=24, 
     inputs = keras.layers.Input(shape=input_shape)
 
     # layer 1 
-    nn = keras.layers.Conv1D(filters=num_filters, kernel_size=19, padding='same', 
+    nn = keras.layers.Conv1D(filters=num_filters, kernel_size=first_layer_kernel_size, padding='same', 
                              kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation(activation)(nn)
@@ -145,7 +145,7 @@ def cnn_deep_init(input_shape, output_shape, activation='relu', num_filters=24, 
 
 
 
-def cnn_shallow_init(input_shape, output_shape, activation='relu', num_filters=24, sigma=0.05):
+def cnn_shallow_init(input_shape, output_shape, activation='relu', num_filters=24, first_layer_kernel_size=19, sigma=0.05):
     l2 = keras.regularizers.l2(1e-6)   
     initializer = keras.initializers.RandomNormal(mean=0.0, stddev=sigma)
     
@@ -153,7 +153,7 @@ def cnn_shallow_init(input_shape, output_shape, activation='relu', num_filters=2
     inputs = keras.layers.Input(shape=input_shape)
 
     # layer 1 
-    nn = keras.layers.Conv1D(filters=num_filters, kernel_size=19, padding='same', 
+    nn = keras.layers.Conv1D(filters=num_filters, kernel_size=first_layer_kernel_size, padding='same', 
                              kernel_regularizer=l2, kernel_initializer=initializer)(inputs)     
     nn = keras.layers.BatchNormalization()(nn)
     nn = keras.layers.Activation(activation)(nn)
