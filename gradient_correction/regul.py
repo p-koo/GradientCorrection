@@ -1,7 +1,4 @@
-import os, h5py, sys, time
 import numpy as np
-import matplotlib.pyplot as plt
-%matplotlib inline
 import tensorflow as tf
 from tensorflow import keras
 import tfomics
