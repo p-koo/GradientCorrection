@@ -43,9 +43,7 @@ for model_name in model_names:
             elif model_name == 'cnn_shallow':
                 model = model_zoo.cnn_shallow(input_shape, output_shape, activation=activation)
 
-            name = model_name+'_'+activation+'_'+str(trial)
-            print('model: ' + name)
-
+                
             # set up optimizer/metrics and compile model
             optimizer = keras.optimizers.Adam(learning_rate=0.001) 
             loss = keras.losses.BinaryCrossentropy(from_logits=False, label_smoothing=0.0)
