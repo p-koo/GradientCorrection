@@ -57,6 +57,6 @@ for model_name in model_names:
             # save model
             base_name = model_name+'_'+activation + '_' + str(reg_factor)
             name = base_name+'_'+str(trial)
-            weights_path = os.path.join(params_path, name+'.hdf5')
+            weights_path = os.path.join(params_path, name+'.h5')
             model.save_weights(weights_path)
             
