@@ -21,7 +21,7 @@ params_path = os.path.join(results_path, 'model_params')
 #------------------------------------------------------------------------
 
 # load data
-experiment ='FOXK2'  # Include list of 10 proteins here. 
+experiment ='MAX'  # Include list of 10 proteins here. 
 filename = experiment + '_200.h5'
 data_path = '../data/' 
 file_path = os.path.join(data_path, filename)
