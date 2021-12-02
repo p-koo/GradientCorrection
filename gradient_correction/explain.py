@@ -134,8 +134,8 @@ def integrated_grad(x, model, baseline, num_steps=25,
   x_interp = interpolate_data(baseline, x, steps)
   grad = saliency_map(x_interp, model, class_index=class_index, func=func)
   avg_grad = integral_approximation(grad)
-  avg_grad= np.expand_dims(avg_grad, axis=0)
-  return avg_grad 
+  avg_grad= np.expand_dims(avg_grad, axis=0)  #Repaired
+  return avg_grad #Repaired
 
 
 #------------------------------------------------------------------------------
