@@ -3,7 +3,7 @@ import matplotlib.patches as patches
 import numpy as np 
 
 
-def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_max, x_label, labelsize=15, fontsize=15, alpha=0.9, s=30):
+def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_max, x_label, file_save, labelsize=15, fontsize=15, alpha=0.9, s=30):
 
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
@@ -37,6 +37,7 @@ def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_
     plt.xlabel(x_label, fontsize=fontsize)
     plt.ylabel('Improvement', fontsize=fontsize)
     fig.tight_layout()  #To prevent filesave cutting of the outside parts of the figure. 
+    plt.savefig(file_save, bbox_inches='tight')  
 
     
 def plot_attribution_vs_performance(attribution, performance, x_label, labelsize=15, fontsize=15, alpha=0.9, s=30):
