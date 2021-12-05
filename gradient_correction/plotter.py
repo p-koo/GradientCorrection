@@ -40,7 +40,7 @@ def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_
     plt.savefig(file_save, bbox_inches='tight')  
 
     
-def plot_attribution_vs_performance(attribution, performance, x_label, labelsize=15, fontsize=15, alpha=0.9, s=30):
+def plot_attribution_vs_performance(attribution, performance, x_label, file_save, labelsize=15, fontsize=15, alpha=0.9, s=30):
 
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
@@ -69,6 +69,7 @@ def plot_attribution_vs_performance(attribution, performance, x_label, labelsize
     plt.xticks(fontsize=fontsize)
     plt.yticks(fontsize=fontsize)
     fig.tight_layout()  #To prevent filesave cutting of the outside parts of the figure. 
+    plt.savefig(file_save, bbox_inches='tight')  
 
 
 def plot_regularization(experiment_name,log_reg, Performance, Cosine, Performance_std, Cosine_std, y1_min, y1_max, y2_min, y2_max, labelsize=20, fontsize=25):
