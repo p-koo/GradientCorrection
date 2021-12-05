@@ -3,7 +3,7 @@ import matplotlib.patches as patches
 import numpy as np 
 
 
-def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_max, labelsize=15, fontsize=15, alpha=0.9, s=30):
+def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_max, x_label, labelsize=15, fontsize=15, alpha=0.9, s=30):
 
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
@@ -34,12 +34,12 @@ def plot_improvement(attribution, attribution_corrected, x_min, x_max, y_min, y_
     ax1.set_ylim(y_min,y_max)
     ax1.tick_params(axis="x", labelsize=labelsize)
     ax1.tick_params(axis="y", labelsize=labelsize)    
-    plt.xlabel('Cosine similarity', fontsize=fontsize)
+    plt.xlabel(x_label, fontsize=fontsize)
     plt.ylabel('Improvement', fontsize=fontsize)
     fig.tight_layout()  #To prevent filesave cutting of the outside parts of the figure. 
 
     
-def plot_attribution_vs_performance(attribution, performance, labelsize=15, fontsize=15, alpha=0.9, s=30):
+def plot_attribution_vs_performance(attribution, performance, x_label, labelsize=15, fontsize=15, alpha=0.9, s=30):
 
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
@@ -63,7 +63,7 @@ def plot_attribution_vs_performance(attribution, performance, labelsize=15, font
 
     ax1.tick_params(axis="x", labelsize=labelsize)
     ax1.tick_params(axis="y", labelsize=labelsize) 
-    plt.xlabel('Cosine similarity', fontsize=fontsize)
+    plt.xlabel(x_label, fontsize=fontsize)
     plt.ylabel('Classification AUC', fontsize=fontsize)
     plt.xticks(fontsize=fontsize)
     plt.yticks(fontsize=fontsize)
