@@ -9,7 +9,7 @@ from gradient_correction import helper, model_zoo
 
 #------------------------------------------------------------------------
 
-num_trials = 50  
+num_trials = 50
 model_names = ['cnn_deep', 'cnn_shallow'] 
 activations = ['relu', 'exponential']  
 
@@ -39,7 +39,7 @@ for model_name in model_names:
             elif model_name == 'cnn_shallow':
                 model = model_zoo.cnn_shallow(input_shape, output_shape, activation=activation)
 
-            name = model_name+'_'+activation+'_'+str(trial)
+            name = model_name + '_' + activation + '_' + str(trial)
             print('model: ' + name)
 
             # set up optimizer/metrics and compile model
@@ -72,5 +72,3 @@ for model_name in model_names:
             # save model
             weights_path = os.path.join(params_path, name+'.h5')
             model.save_weights(weights_path)
-
-
