@@ -10,7 +10,7 @@ import tfomics
 
 #------------------------------------------------------------------------
 
-num_trials = 50  
+num_trials = 50 
 model_names = ['cnn_deep', 'cnn_shallow'] 
 activations = ['relu', 'exponential']  
 attr_methods = ['saliency', 'intgrad', 'smoothgrad', 'expintgrad'] #['saliency', 'smoothgrad', 'intgrad', 'expintgrad']
@@ -34,6 +34,7 @@ true_index = np.where(y_test[:,0] == 1)[0]
 X = x_test[true_index][:500]  
 X_model = test_model[true_index][:500]  
 X_model_centered =  X_model - 0.25
+X_model_information =  np.log2(4) + np.sum(X_model*np.log2(X_model),axis=2, keepdims=True)   
 
 #------------------------------------------------------------------------
 
@@ -43,6 +44,7 @@ for model_name in model_names:
 
         # set up results dictionary of metrics to track
         results = {}
+        results['nucleotide_ground_truth'] = X_model_information != 0
         results['auc'] = []
         results['angles'] = []
         for method in attr_methods:
@@ -147,5 +149,3 @@ for model_name in model_names:
         print('Saving results to: ' + filename)
         with open(filename, 'wb') as f:
             cPickle.dump(results, f, protocol=cPickle.HIGHEST_PROTOCOL)
-
-
