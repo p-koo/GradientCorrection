@@ -91,6 +91,31 @@ def plot_angle_distribution(index_, L, sine, ticks=[0.0, 0.01, 0.02], fontsize=2
     plt.hist(sine_flattened, 100, density=True, alpha=0.5, color='g')
     
     
+def plot_improvement_vs_angle_motif(index_, L, sine, improvement, fontsize=25):  # file_save, 
+
+    plt.figure(figsize=(10, 6))
+
+    #Reshape (concatenate n times, where n is the number of runs, to make it the same size as sine[])
+    index = []
+    for i in range (0,L):
+        index.append(index_[:,:,0])   
+    index=np.array(index)    
+
+    plt.scatter(sine[index], improvement[index], s=0.3, c='b', marker="o", alpha=0.01)  
+    plt.xlabel('Angle (degrees)', fontsize=25)
+    plt.ylabel('Similarity improvement \n (Cosine similarity)', fontsize=fontsize)
+    plt.xticks(fontsize=21)
+    plt.yticks(fontsize=21)
+
+    #Maximal theoretical improvement 
+    bin_map=np.linspace(-90,90,1000)
+    bin_points = 1-np.abs(np.cos(bin_map/180*3.1416))
+    plt.scatter(bin_map, bin_points, s=0.1, c='red', marker="o", alpha=0.5)
+
+    plt.ylim(-0.75,1)           
+    #plt.savefig('drive/My Drive/results/U_scatter.pdf', dpi='figure')      
+    
+    
 def plot_regularization(experiment_name,log_reg, Performance, Cosine, Performance_std, Cosine_std, y1_min, y1_max, y2_min, y2_max, labelsize=20, fontsize=25):
     # Plot Line1 (Left Y Axis)
     fig, ax1 = plt.subplots(1,1,figsize=(12,7), dpi= 80)
