@@ -72,6 +72,25 @@ def plot_attribution_vs_performance(attribution, performance, x_label, file_save
     plt.savefig(file_save, bbox_inches='tight')  
 
 
+def plot_angle_distribution(index_, L, sine, ticks=[0.0, 0.01, 0.02], fontsize=25, y_label='Density'):  # file_save, 
+
+    #Reshape (concatenate n times, where n is the number of runs, to make it the same size as sine[])
+    index = []
+    for i in range (0,L):
+        index.append(index_[:,:,0])   
+    index=np.array(index)    
+
+    sine_flattened = np.reshape(sine, -1)
+    index_flattened = np.reshape(index, -1)
+    sine_flattened=sine_flattened[index_flattened]
+
+    plt.figure(figsize=(10,2))
+    plt.ylabel(y_label, fontsize=fontsize)
+    plt.tick_params(axis='x',  which='both', bottom=False,  top=False, labelbottom=False) 
+    plt.yticks(ticks=ticks, fontsize=20)
+    plt.hist(sine_flattened, 100, density=True, alpha=0.5, color='g')
+    
+    
 def plot_regularization(experiment_name,log_reg, Performance, Cosine, Performance_std, Cosine_std, y1_min, y1_max, y2_min, y2_max, labelsize=20, fontsize=25):
     # Plot Line1 (Left Y Axis)
     fig, ax1 = plt.subplots(1,1,figsize=(12,7), dpi= 80)
