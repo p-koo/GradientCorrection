@@ -115,6 +115,29 @@ def plot_improvement_vs_angle_motif(index_, L, sine, improvement, fontsize=25): 
     plt.ylim(-0.75,1)           
     #plt.savefig('drive/My Drive/results/U_scatter.pdf', dpi='figure')      
     
+def plot_improvement_vs_angle_nonmotif(index_, L, sine, wild_saliency, wild_saliency_adj, fontsize=25):
+
+    #Reshape (concatenate n times, where n is the number of runs, to make it the same size as sine[])
+    index = []
+    for i in range (0,L):
+        index.append(index_[:,:,0])   
+    index=np.array(index)    
+
+    plt.figure(figsize=(10, 6))
+    plt.scatter(sine[index], wild_saliency[index], s=0.5, c='b', marker="o",  alpha=0.1, label='Before correction')
+    plt.scatter(sine[index], wild_saliency_adj[index], s=0.5, c='r', marker="o",  alpha=0.1, label='After correction')
+
+    #Label mock-points
+    plt.scatter(-80, 0.7, s=30, c='b', marker="o",  alpha=1)
+    plt.scatter(-80, 0.59, s=30, c='r', marker="o",  alpha=1)
+
+    plt.xlabel('Angle (degrees)', fontsize=fontsize)
+    plt.ylabel('Saliency score', fontsize=fontsize)
+    plt.xticks(fontsize=21)
+    plt.yticks(fontsize=21)
+    plt.legend(loc='upper left', fontsize=17, frameon=False);
+    plt.ylim(-0.6,0.8)
+    
     
 def plot_regularization(experiment_name,log_reg, Performance, Cosine, Performance_std, Cosine_std, y1_min, y1_max, y2_min, y2_max, labelsize=20, fontsize=25):
     # Plot Line1 (Left Y Axis)
