@@ -9,8 +9,8 @@ from gradient_correction import helper, model_zoo
 
 #------------------------------------------------------------------------
 
-num_trials = 10  
-model_names = ['cnn_deep', 'cnn_shallow'] 
+num_trials = 50  
+model_names = ['cnn_deep'] #'cnn_shallow' 
 activations = ['relu', 'exponential']  
 
 results_path = helper.make_directory('../results', 'chipseq')  
@@ -19,7 +19,7 @@ params_path = helper.make_directory(results_path, 'model_params')
 #------------------------------------------------------------------------
 
 # load data
-experiment ='MAX'  # Include list of 10 proteins here. 
+experiments = ['CTCF', 'MAX', 'FOXK2', 'Arid3', 'MEIS2', 'GABPA', 'ZNF24', 'LEF1', 'SRF', 'REST']  # Include list of 10 proteins here. 
 filename = experiment + '_200.h5'
 data_path = '../data/' 
 file_path = os.path.join(data_path, filename)
@@ -36,7 +36,7 @@ input_shape = x_train.shape[1:]
 output_shape = y_train.shape[1]
 
 #Ensemble version - varied filter size or number of filters 
-num_filters=[12, 14, 16, 18, 20, 22, 24, 26, 28, 30]  #kernel_size=[3, 5, 7, 9,11,13,15,17,19,21]
+num_filters= [12,12,12,12,12, 14,14,14,14,14, 16,16,16,16,16, 18,18,18,18,18, 20,20,20,20,20, 22,22,22,22,22, 24,24,24,24,24,26,26,26,26,26,28,28,28,28,28, 30,30,30,30,30]  #num_filters=[12, 14, 16, 18, 20, 22, 24, 26, 28, 30]  #kernel_size=[3, 5, 7, 9,11,13,15,17,19,21]
 
 #------------------------------------------------------------------------
 
