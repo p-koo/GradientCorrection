@@ -1,5 +1,5 @@
 """
-Evaluate models on synthetic data: classification and interpretability performance.
+Evaluate models on synthetic data: experiments with the initialization of model weights.
 """ 
 import os
 import numpy as np
