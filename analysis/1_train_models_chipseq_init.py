@@ -13,7 +13,7 @@ num_trials = 10
 model_names = ['cnn_deep', 'cnn_shallow'] # 
 activations = ['relu', 'exponential']  
 
-results_path = helper.make_directory('../results', 'chipseq')  
+results_path = helper.make_directory('../results', 'chipseq_init')  
 params_path = helper.make_directory(results_path, 'model_params')  
 
 #------------------------------------------------------------------------
@@ -48,9 +48,9 @@ for experiment in experiments:
             
                     # load model
                     if model_name == 'cnn_deep':
-                        model = model_zoo.cnn_deep(input_shape, output_shape, activation=activation, sigma=sigma)
+                        model = model_zoo.cnn_deep_init(input_shape, output_shape, activation=activation, sigma=sigma)
                     elif model_name == 'cnn_shallow':
-                        model = model_zoo.cnn_shallow(input_shape, output_shape, activation=activation, sigma=sigma)
+                        model = model_zoo.cnn_shallow_init(input_shape, output_shape, activation=activation, sigma=sigma)
 
                     name = experiment +'_'+  model_name+'_'+activation+'_'+ str(sigma) + '_' +str(trial)
                     print('model: ' + name)
