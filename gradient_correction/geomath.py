@@ -55,24 +55,15 @@ def dispersion_bins_func(experiments, dispersion, sine_flattened):
     return dispersion_bins 
 
 
-def count_large_angles(sine): 
-    def frac_larger_angles(sine, threshold=30): 
-        # N, L = sine.shape
-       
-        count_large_angles = np.zeros((len(sine), len(sine[0])))
-        for z in range(len(sine)):
-            for i in range(len(sine[0])):
-                count = 0
-                for j in range (len(sine[0,0])):
-                    if np.abs(sine[z,i,j]) > threshold: count+=1  
-                count_large_angles[z,i] = count
-        count_large_angles = np.array(count_large_angles.reshape(len(count_large_angles)*len(count_large_angles[0]),))  
-        count_large_angles = 100 * count_large_angles/len(sine[0,0])
-        return count_large_angles
-
-    count_large_angles30 = frac_larger_angles(sine, threshold=30)
-    count_large_angles45 = frac_larger_angles(sine, threshold=45)
-    count_large_angles60 = frac_larger_angles(sine, threshold=60)
- 
-    return count_large_angles30, count_large_angles45, count_large_angles60
+def count_large_angles(sine, threshold=30): 
+    count_large_angles = np.zeros((len(sine), len(sine[0])))
+    for z in range(len(sine)):
+        for i in range(len(sine[0])):
+            count = 0
+            for j in range (len(sine[0,0])):
+                if np.abs(sine[z,i,j]) > threshold: count+=1  
+            count_large_angles[z,i] = count
+    count_large_angles = np.array(count_large_angles.reshape(len(count_large_angles)*len(count_large_angles[0]),))  
+    count_large_angles = 100 * count_large_angles/len(sine[0,0])
+    return count_large_angles
 
