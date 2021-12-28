@@ -64,7 +64,7 @@ def count_large_angles(sine):
             for i in range(len(sine[0])):
                 count = 0
                 for j in range (len(sine[0,0])):
-                    if np.abs(sine[z,i,j]) > large_angle: count+=1  
+                    if np.abs(sine[z,i,j]) > threshold: count+=1  
                 count_large_angles[z,i] = count
         count_large_angles = np.array(count_large_angles.reshape(len(count_large_angles)*len(count_large_angles[0]),))  
         count_large_angles = 100 * count_large_angles/len(sine[0,0])
