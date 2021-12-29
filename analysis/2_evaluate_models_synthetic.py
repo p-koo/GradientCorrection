@@ -13,7 +13,7 @@ import tfomics
 num_trials = 50 
 model_names = ['cnn_deep', 'cnn_shallow'] 
 activations = ['relu', 'exponential']  
-attr_methods = ['saliency', 'intgrad', 'smoothgrad', 'expintgrad'] #['saliency', 'smoothgrad', 'intgrad', 'expintgrad']
+attr_methods = ['saliency', 'smoothgrad', 'intgrad', 'expintgrad']
 
 results_path = os.path.join('../results', 'synthetic')  
 params_path = os.path.join(results_path, 'model_params')  
@@ -47,6 +47,7 @@ for model_name in model_names:
         results['nucleotide_ground_truth'] = X_model_information != 0
         results['auc'] = []
         results['angles'] = []
+        results['count_angles'] = {}
         for method in attr_methods:
             results[method] = {}
             results[method]['scores'] = []
@@ -143,9 +144,14 @@ for model_name in model_names:
             scores = explainer.saliency_maps(X)
             angles = geomath.calculate_angles(scores)
             results['angles'].append(angles)
+        results['count_angles']['30']=geomath.count_large_angles(np.array(results['angles']),30)
+        results['count_angles']['45']=geomath.count_large_angles(np.array(results['angles']),45)
+        results['count_angles']['60']=geomath.count_large_angles(np.array(results['angles']),60)
 
         # save results dictionary
         filename = os.path.join(results_path, base_name+'_results.pickle')
         print('Saving results to: ' + filename)
         with open(filename, 'wb') as f:
             cPickle.dump(results, f, protocol=cPickle.HIGHEST_PROTOCOL)
+
+
