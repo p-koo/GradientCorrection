@@ -59,7 +59,7 @@ for sigma in sigmas:
                 keras.backend.clear_session()
             
                 # load model
-                #model = helper.load_model(model_name, activation=activation)  #Antonio
+                #model = helper.load_model(model_name, activation=activation) 
                 if model_name == 'cnn_deep':
                     model = model_zoo.cnn_deep(input_shape, output_shape, activation=activation)
                 elif model_name == 'cnn_shallow':
