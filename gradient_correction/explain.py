@@ -1,5 +1,3 @@
-""" code taken from https://github.com/p-koo/tfomics/explain.py
-"""
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
