@@ -96,7 +96,6 @@ def interpretability_performance(score_times_input, X_model, threshold=0.1):
         fpr, tpr, thresholds = roc_curve(label[index], gs[index])
         roc_score.append(auc(fpr, tpr))
 
-        #Antonio
         gt_info_score.append(gt_info)
 
     roc_score = np.array(roc_score)
